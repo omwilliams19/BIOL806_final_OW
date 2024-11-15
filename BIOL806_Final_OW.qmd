@@ -1,0 +1,306 @@
+---
+title: "BIOL806_Final_OW"
+author: "Olivia Williams"
+format: html
+editor: visual
+---
+
+## Introduction
+
+Paste intro here.
+
+## Methods
+
+Paste methods here.
+
+## Results
+
+![Figure 1: Initial UMAP of all cell types](Final_images/Figure1.png)
+
+![Figure 2: Dorsal IPEC reclustered UMAP](Final_images/Figure2.png)
+
+![Figure 3: Dorsal IPEC UMAP with Time point metadata.](Final_images/Figure3.png)
+
+```{r}
+#library for all needed packages
+library(dplyr)
+library(tidyverse)
+library(kableExtra)
+library(ggplot2)
+#loading in all of the datasets I'm using for dot plots and frequency plots
+genes_vs_T <- read.csv("TBX5_IPEs_subset_of_PAX6_pos_clusters_v3-dot_plot-Timepoints-All.csv")
+genes_vs_C <- read.csv("TBX5_IPEs_subset_of_PAX6_pos_clusters_v3-dot_plot-louvain-All.csv")
+cluster_composition <- read.csv("TBX5_IPEs_subset_of_PAX6_pos_clusters_v3-frequency_plot-proportional.csv")
+prox1 <- read.csv("prox1_dot_plot.csv")
+
+#loading in all 15 clusters batch differential expression
+cluster0 <- read.csv("DE-Cluster_0.csv")
+cluster1 <- read.csv("DE-Cluster_1.csv")
+cluster2<- read.csv("DE-Cluster_2.csv")
+cluster3<- read.csv("DE-Cluster_3.csv")
+cluster4<- read.csv("DE-Cluster_4.csv")
+cluster5<- read.csv("DE-Cluster_5.csv")
+cluster6<- read.csv("DE-Cluster_6.csv")
+cluster7<- read.csv("DE-Cluster_7.csv")
+cluster8<- read.csv("DE-Cluster_8.csv")
+cluster9<- read.csv("DE-Cluster_9.csv")
+cluster10<- read.csv("DE-Cluster_10.csv")
+cluster11<- read.csv("DE-Cluster_11.csv")
+cluster12<- read.csv("DE-Cluster_12.csv")
+cluster13<- read.csv("DE-Cluster_13.csv")
+cluster14<- read.csv("DE-Cluster_14.csv")
+cluster15<- read.csv("DE-Cluster_15.csv")
+```
+
+```{r}
+#Table 1 is Batch Differential of the top 3-8 genes per cluster
+#I know that a table as a figure might not seem very fancy but I spent over 2 hours on this table and I'm so happy with how it turned out.
+
+#fixing the datasets to filter for best gene expression which will be different for each cluster. Then select for pct1, pct2, and gene name. Mutate to add a column with their cluster number to help with joining.
+
+new_cluster0 <- cluster0%>%
+  filter(p_val_adj<0.05,
+         pct_2<20,
+         pct_1>90)%>%
+  select(Gene, pct_1, pct_2)%>%
+  mutate(Cluster = 0)
+
+new_cluster1 <- cluster1%>%
+  filter(p_val_adj<0.05,
+         pct_2<40,
+         pct_1>40)%>%
+  select(Gene, pct_1, pct_2)%>%
+  mutate(Cluster = 1)
+
+#cluster 2 is just not unique so it's parameters are much worse than the others. When I ran pct_1>pct_2, pct_1>1 there was one gene. This means that only 1% of cluster 2 expressed it and less than 1% of the other expressed it. 
+#due to this I decided to just find ones that over 80% expressed which was only 5 genes.
+new_cluster2 <- cluster2%>%
+  filter(p_val_adj<0.05,
+         pct_1>80)%>%
+  select(Gene, pct_1, pct_2)%>%
+  mutate(Cluster = 2)
+
+new_cluster3 <- cluster3%>%
+  filter(p_val_adj<0.05,
+         pct_1>75,
+         pct_2<25)%>%
+  select(Gene, pct_1, pct_2)%>%
+  mutate(Cluster = 3)
+
+new_cluster4 <- cluster4%>%
+  filter(p_val_adj<0.05,
+         pct_2<40,
+         pct_1>70)%>%
+  select(Gene, pct_1, pct_2)%>%
+  mutate(Cluster = 4)
+
+new_cluster5 <- cluster5%>%
+  filter(p_val_adj<0.05,
+         pct_1>80,
+         pct_2<40)%>%
+  select(Gene, pct_1, pct_2)%>%
+  mutate(Cluster = 5)
+
+new_cluster6 <- cluster6%>%
+  filter(p_val_adj<0.05,
+         pct_1>75,
+         pct_2<25)%>%
+  select(Gene, pct_1, pct_2)%>%
+  mutate(Cluster = 6)
+
+new_cluster7 <- cluster7%>%
+  filter(p_val_adj<0.05,
+         pct_1>70,
+         pct_2<55)%>%
+  select(Gene, pct_1, pct_2)%>%
+  mutate(Cluster = 7)
+
+new_cluster8 <- cluster8%>%
+  filter(p_val_adj<0.05,
+         pct_1>70,
+         pct_2<40)%>%
+  select(Gene, pct_1, pct_2)%>%
+  mutate(Cluster = 8)
+
+new_cluster9 <- cluster9%>%
+  filter(p_val_adj<0.05,
+         pct_1>90,
+         pct_2<25)%>%
+  select(Gene, pct_1, pct_2)%>%
+  mutate(Cluster = 9)
+
+new_cluster10 <- cluster10%>%
+  filter(p_val_adj<0.05,
+         pct_1>65,
+         pct_2<40)%>%
+  select(Gene, pct_1, pct_2)%>%
+  mutate(Cluster = 10)
+
+new_cluster11 <- cluster11%>%
+  filter(p_val_adj<0.05,
+         pct_1>60,
+         pct_2<35)%>%
+  select(Gene, pct_1, pct_2)%>%
+  mutate(Cluster = 11)
+
+new_cluster12 <- cluster12%>%
+  filter(p_val_adj<0.05,
+         pct_1>60,
+         pct_2<40)%>%
+  select(Gene, pct_1, pct_2)%>%
+  mutate(Cluster = 12)
+
+new_cluster13 <- cluster13%>%
+  filter(p_val_adj<0.05,
+         pct_1>70,
+         pct_2<35)%>%
+  select(Gene, pct_1, pct_2)%>%
+  mutate(Cluster = 13)
+
+
+new_cluster14 <- cluster14%>%
+  filter(p_val_adj<0.05,
+         pct_1>60,
+         pct_2<40)%>%
+  select(Gene, pct_1, pct_2)%>%
+  mutate(Cluster = 14)
+
+
+new_cluster15 <- cluster15%>%
+  filter(p_val_adj<0.05,
+         pct_1>70,
+         pct_2<25)%>%
+  select(Gene, pct_1, pct_2)%>%
+  mutate(Cluster = 15)
+
+
+#Now attempting to join them... I know there is probably a way easier way to do this but this was the only way I could get it to work
+joined_clusters01<- full_join(new_cluster0, new_cluster1)
+
+joined_clusters23<- full_join(new_cluster2, new_cluster3)
+
+joined_clusters0123 <- full_join(joined_clusters01, joined_clusters23)
+
+joined_clusters45 <- full_join(new_cluster4, new_cluster5)
+joined_clusters67 <- full_join(new_cluster6, new_cluster7)
+
+joined_clusters4567 <- full_join(joined_clusters45, joined_clusters67)
+
+joined_clusters89 <- full_join(new_cluster8, new_cluster9)
+joined_clusters1011<- full_join(new_cluster10, new_cluster11)
+
+joined_clusters891011 <- full_join(joined_clusters89, joined_clusters1011)
+
+joined_clusters1213 <- full_join(new_cluster12, new_cluster13)
+joined_clusters1415 <- full_join(new_cluster14, new_cluster15)
+
+joined_clusters12131415 <- full_join(joined_clusters1213, joined_clusters1415)
+
+joined_clusters01234567 <- full_join(joined_clusters0123, joined_clusters4567)
+
+joined_clusters89101112131415 <- full_join(joined_clusters891011, joined_clusters12131415)
+
+final_joined <- full_join(joined_clusters01234567, joined_clusters89101112131415)
+
+#kable to help round the digits and get a title
+kable(final_joined,
+      caption = "Marker Genes Per Cluster",
+      digits = 1
+      )
+```
+
+```{r}
+#Figure 4 
+ 
+genes_vs_T_edit <- genes_vs_T%>%
+  filter(Gene == "SLC6A13;NDU88_006413_6"| Gene == "SMTNL2;NDU88_001387_4")%>%
+  group_by(Cluster)%>%
+  summarize(Gene, Fraction.of.cells.expressing.gene, Average.expression)
+ 
+
+#turns out the T10-16 get put before T2 so I'm making Cluster into a factor
+genes_vs_T_edit <- genes_vs_T_edit%>%
+  mutate(Cluster = as.factor(Cluster))
+
+#here I am reordering them to the correct time course
+genes_vs_T_edit <- genes_vs_T_edit %>%
+  mutate(Cluster = fct_relevel(Cluster, "T0", "T1", "T2", "T4", "T6", "T8", "T10", "T12", "T14", "T16"))
+
+#now making a dot plot
+ggplot(data = genes_vs_T_edit,
+       aes(x= Gene, y= Cluster,
+           color = "Average.expression",
+           size = "Fraction.of.cells.expressing.gene"))+
+  #I want the size of the dot to be the fraction that's expressing so the more that are expressing the larger the dot. I also want to create a color gradient of the average expression so the higher it is the darker the color
+  geom_dotplot()
+```
+
+Figure 4: Gene expression over time. Note that T0 is a negative control with no regeneration. It is comparable to iris at homeostasis.
+
+```{r}
+#Figure 5 will be a dot plot of genes versus cluster. Has it's own dataset that needs to be loaded in. Then ggplot 
+
+genes_vs_C_edit <- genes_vs_C%>%
+  group_by(Cluster)%>%
+  summarize(Gene, Fraction.of.cells.expressing.gene, Average.expression)%>%
+  #filtering for the best marker genes per cluster
+  filter(Average.expression>0)
+
+#turns out the T10-16 get put before T2 so I'm making Cluster into a factor
+genes_vs_C_edit <- genes_vs_C_edit%>%
+  mutate(Cluster = as.factor(Cluster))
+
+#here I am reordering them to the correct time course
+genes_vs_C_edit <- genes_vs_C_edit %>%
+  mutate(Cluster = fct_relevel(Cluster, "T0", "T1", "T2", "T4", "T6", "T8", "T10", "T12", "T14", "T16"))
+
+#now making a dot plot
+ggplot(data = genes_vs_C_edit,
+       aes(x= Gene, y= Cluster,
+           size = "Fraction.of.cells.expressing.gene"))+
+  geom_dotplot()
+
+```
+
+Figure 5: Marker genes for each cluster of Dorsal IPECs.
+
+```{r}
+#Figure 6 Frequency plot
+
+#https://stackoverflow.com/questions/70204430/ggplot-adding-a-frequency-plot-over-a-percentage-plot 
+
+ggplot(data = cluster_composition, aes(x= leiden.clusters))+
+  
+       
+```
+
+Figure 6: Frequency plot of cluster composition for each time point.
+
+```{r}
+#Figure 7 will be a bar graph of PROX1 expression in each cluster. ggplot geom_bar
+prox1_edit <- prox1%>%
+  select(Cluster, Fraction.of.cells.expressing.gene)
+#of course clusters again need to be reordered...
+prox1_edit <- prox1_edit%>%
+  mutate(Cluster = as.factor(Cluster))
+
+prox1_edit <- prox1_edit %>%
+  mutate(Cluster = fct_relevel(Cluster, "Cluster 0", "Cluster 1", "Cluster 2", "Cluster 3", "Cluster 4", "Cluster 5", "Cluster 6", "Cluster 7", "Cluster 8", "Cluster 9", "Cluster 10", "Cluster 11", "Cluster 12", "Cluster 13", "Cluster 14", "Cluster 15"))
+
+ggplot(data = prox1_edit, aes(x= Cluster, y= Fraction.of.cells.expressing.gene))+
+  geom_bar(stat = "identity")+
+  theme(axis.text.x = element_text(angle = 90))+
+  ggtitle(label = "Expression of PROX1 per Cluster")+
+  ylim(0, 100)
+
+```
+
+Figure 7: Lens marker gene PROX1 expression per cluster
+
+## Discussion
+
+Insert discussion here.
+
+## References
+
+finalized references from Zotero added here.
