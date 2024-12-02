@@ -1,21 +1,64 @@
 ---
 title: "BIOL806_Final_OW"
 author: "Olivia Williams"
-format: html
+format: pdf
+  number.fig: TRUE
 editor: visual
 ---
 
 ## Introduction
 
-Paste intro here.
+*Pleurodeles waltl* has the remarkable capability of regenerating the lens of the eye all the way through adulthood (Sousounis 2015). An ability that many other vertebrates such as humans or mice don’t have. It’s worth noting that even highly regenerative species like frogs and axolotls lose this ability after early development/metamorphosis stages (Henry and Tsonis, 2010; Suetsugu-Maki et al., 2012). Lens regeneration is a very unique process. Unlike other types of regeneration which require at least some cells from the original organ to dedifferentiate and redifferentiate in order to replace lost tissue (Tsonis, 1996; Sandoval-Guzmán et al., 2014), lens regeneration is able to occur after whole organ removal and the new lens is regenerated from a completely different tissue: the iris (Tsissios et al., 2023).
+
+Lens regeneration has been observed in many species of newts dating back to the 1930s. Back then Sato characterized the lens regeneration process into 13 distinct stages by observing them in *Notophthalmus viridescens* and *Cynops pyrrhogaster* species. In 2023 these stages were officially applied to *Pleurodeles waltl* (Tsissios et al., 2023). Overall the regeneration process in P. waltl is very well characterized at a histological and cellular level. In stages I-III the dorsal iris pigmented epithelial cells (iPECs) undergo transdifferentiation and reprogramming to become lens cells. They bud off of the dorsal iris to create a lens vesicle. Then in stages V-VII the epithelial cells that line the lens vesicle wall elongate to form primary lens fibers. Finally in stages VIII-XI the epithelial cells that are at the equatorial region of the vesicle will change shape, lose their organelles, and ultimately become lens fibers (Chaffee et al., 2014). 
+
+	Studying the lens regeneration process could be very informative to many types of regeneration, and offers the unique view of whole organ regeneration. Until now there has been no characterization of all the genes being actively expressed in P. waltl in and around the iris during the lens regeneration process. In this study we aimed to answer this exact question. We extracted iris rings at ten different time points post injury and completed single cell RNA sequencing (scRNAseq). This technique takes a tissue that has been isolated into single cell suspension and sequences each individual cell for RNA. Thousands of RNA molecules from each cell are sequenced and compared to an annotated P. waltl reference genome in order to identify genes that are present at these ten different time points (T0 being a negative control of homeostasis, T1, T2, T4, T6, T8, T10, T12, T14, and T16). 
+
+	T0 is able to be compared to known genes expressed in other iris tissue as it represents iris cells that are not regenerating. This allows us to compare T0 to single cell iris studies in other species such as mice or humans. However, since those other species don’t regenerate this creates a problem for identifying cell types in T1-T16 as they do not exist in other species. In this study we were able to identify novel dorsal iris cell types, characterize which genes they express, and see what stages they are present in. 
 
 ## Methods
 
-Paste methods here.
+**Animal Handling:**
+
+Experiments involving animals were performed in accordance with the UNH Institutional Animal Care & Use Committee Research (IACUC). After whole eye removals all animals were euthanized by decapitation before being disposed of.  
+
+**Animal Procedures:**
+
+Animals were anesthetized in 0.1% Tricaine solution prior to surgeries and euthanasia. 
+
+**Lentectomies:** Using a #11 surgical scalpel facing upward away from the animal, a small hole was made in the cornea at the border between the iris and sclera. 6mm Vannas surgical scissors were used to cut the cornea across the entire iris, leaving a hole through which the lens was retrieved using straight fine point forceps. Lentectomized animals were returned to treated tap water and handled normally. 
+
+**Iridectomy:** Iris ring removals were performed post lentectomy at specific time points (1 day, 2 days, etc.). These were removed by first making a hole through the cornea and iris with the #11 surgical scalpel at the border between the iris and sclera. Then the iris and cornea were cut out using 6mm Vannas surgical scissors. The iris ring and attached cornea were then moved using forceps into a petri dish containing 0.7X PBS. This iris ring was then peeled off of the cornea and transferred to a DNA LowBind tube for later fixation. 
+
+**Single Cell Procedures**
+
+**Single Cell Isolation of Iris Tissue:** Eight iris rings were placed into BSA-blocked DNA LowBind tubes with 750µL of  0.25% trypsin in 0.7X PBS -Mg-Cl and 2µL of RNAse Inhibitor. They were placed on a Fisherbrand™ Mini Tube Rotator set to agitated spin mode in an incubator set to 37oC and incubated for 15 minutes. Rings were then mixed up and down 3 times using a P1000 and LowBind pipette tips before returning to the incubator for 15 more minutes. The mixing step was repeated, and the tubes were incubated for a final 5 minutes. After the final incubation the mixture was mixed before being pipetted through a 70 µm filter into a pre BSA blocked 5mL tube. 2mL of L-15 media was then added through to rinse the filter and deactivate the trypsin. 
+
+All of the below procedures were done with the Parse Biosciences Evercode™ WT kit and in accordance with their pipelines. 
+
+**Fixation:** Fixation was completed following the Parse Biosciences “Cell Fixation Protocol” version 2 with minor changes. Changes to the protocol were discussed with Parse Biosciences for approval before being implemented. Notable changes include a dead/alive count after step #6 to make sure not too many cells had died during the initial single cell isolation. The final count was also done immediately before adding the DMSO in step #16. After each fixation the tubes containing samples were put into a Mr. Frosty full of isopropanol at room temperature before being stored in a -80C freezer. 
+
+**Sequencing:** Sequencing was done using the Evercode™ WT kit and following associated protocols by the Hubbard Center for Genome Studies at UNH. The “split-pipe” Parse bioinformatics pipeline version 3 was then followed to create the outputs.
+
+**Initial Clustering:** Outputs were then entered into Parse Bioscience’s “Trailmaker” application where they were automatically filtered for cell size, number of genes vs. UMIs, and doublets. The metadata of time points were added manually by adding a new metadata column titled “Timepoints” which were abbreviated T1, T2, etc. The program automatically sorted the data into 29 clusters. Clusters are automatically assigned by the computer to different colors on Uniform Manifold Approximation and Projections (UMAPs), which are ways to easily visualize groups of cell types. In summary, clusters that are close together are related cell types and clusters that are distantly apart are very different from each other, but each cluster is unique which is why they have their own individual color.
+
+**Initial Cluster Labeling & Reclustering:** Clusters were initially labeled using different marker genes to identify cell types (see Figure 1). In order to work with just the dorsal iris pigmented epithelial cells (IPECs), the cells that expressed the dorsal IPEC marker gene TBX5 were reclustered. This resulted in a new UMAP which compares all the dorsal IPECs with each other, resulting in a new shape and more clusters (see Figure 2). All of the following Table 1 and Figures 4-7 were based on this reclustered UMAP data to only include the dorsal IPECs.
+
+All of the below methods were used in R studio using the dplyr, tidyverse, kable, and ggplot2. 
+
+**Table making:** The Batch Differential Expression tables were filtered down to have only the top 2-10 expressed genes. Then only the cluster number, gene name, pct1 (percent of that cluster expressed) and pct2 (percent of other clusters expressed) were selected. From there each of the 16 tables were joined together. Finally using the kable package a finalized version of this table was made which rounded the decimals for pct1 and pct2. 
+
+**Dot plot formation:** The gene expression per louvain clusters and gene expression per time point datasets were used for the two dot plots. The ggplot2 package was used to create a dot plot for Figure 4 of genes versus time point metadata where the size= percent expressed and the color was based on expression levels. A similar dot plot was also made for Figure 5 with genes versus clusters. 
+
+**Frequency plot formation:** A frequency plot was made using a cluster composition data set which showed the amount of each cluster present at each individual timepoint. This data was pivoted to be longer, and then plotted using a stacked bar plot. The scale was changed to be in the percent format, which changed the stacked bar plot into a standard frequency plot.
+
+**Bar plot formation:** A bar plot of the PROX1 lens marker gene was made per cluster to identify which clusters were turning into early lens cells. The bar plot was made in the ggplot2 package with both geom_bar along with the mean PROX1 expression per cluster data. 
 
 ## Results
 
 ![Figure 1: Initial UMAP of all cell types](Final_images/Figure1.png)
+
+![Figure 2: Dorsal IPEC reclustered UMAP](Final_images/Figure2.png)
 
 ![Figure 2: Dorsal IPEC reclustered UMAP](Final_images/Figure2.png)
 
@@ -210,7 +253,7 @@ kable(final_joined,
       )
 ```
 
-```{r}
+```{r, fig.cap= "Gene expression over time. Note that T0 is a negative control with no regeneration. It is comparable to iris at homeostasis."}
 #Figure 4 
  
 #Full disclosure I got some of the extra settings for ggplot that we didn't learn in class from ChatGPT. Definitely needed tweaking. Still working on getting this one to look exactly right...
@@ -241,9 +284,7 @@ ggplot(genes_vs_T, aes(x = Gene, y = Timepoint)) +
   ggtitle(label = "Marker Genes for each Timepoint")
 ```
 
-Figure 4: Gene expression over time. Note that T0 is a negative control with no regeneration. It is comparable to iris at homeostasis.
-
-```{r}
+```{r, fig.cap= "Marker genes for each cluster of Dorsal IPECs"}
 #Figure 5 will be a dot plot of genes versus cluster
 #I got some of the extra settings for ggplot that we didn't learn in class from ChatGPT. Still working on getting this one to look exactly right...
 #I think I want to factor and reorder the genes to make it more clear
@@ -274,9 +315,7 @@ ggplot(genes_vs_C, aes(x = Gene, y = Cluster)) +
 
 ```
 
-Figure 5: Marker genes for each cluster of Dorsal IPECs
-
-```{r}
+```{r, fig.cap= "Frequency plot of cluster composition for each time point."}
 #Figure 6 Frequency plot
 
 #pivoting the data to be long
@@ -308,15 +347,12 @@ ggplot(cluster_comp_long, aes(x = Timepoints, y = Proportion, fill = leiden.clus
     legend.text = element_text(size = 8)
   )+
   ggtitle(label = "Frequency Plot")+
-  scale_fill_viridis_d(option = "B") #had this package from one of the earlier lectures but I might do a more distinct color palette
+  scale_fill_viridis_d(option = "B") #had this package from one of the earlier lectures and it turned out awesome
 ```
 
-Figure 6: Frequency plot of cluster composition for each time point.
-
-```{r}
+```{r, fig.cap= "Lens marker gene PROX1 expression per cluster"}
 #Figure 7 will be a bar graph of PROX1 expression in each cluster. ggplot geom_bar instead of violin plot like I had planned only because I couldn't find a dataset that would work for it as I only have percent expressions, not individual cell data because it's too large for my computer.
-#issues with colors again....
-#I also want to run some sort of statisical test on this one, but I'm not really sure which ones right just yet.
+
 prox1_edit <- prox1%>%
   select(Cluster, Fraction.of.cells.expressing.gene)
 #of course clusters again need to be reordered...
@@ -326,8 +362,29 @@ prox1_edit <- prox1_edit%>%
 prox1_edit <- prox1_edit %>%
   mutate(Cluster = fct_relevel(Cluster, "Cluster 0", "Cluster 1", "Cluster 2", "Cluster 3", "Cluster 4", "Cluster 5", "Cluster 6", "Cluster 7", "Cluster 8", "Cluster 9", "Cluster 10", "Cluster 11", "Cluster 12", "Cluster 13", "Cluster 14", "Cluster 15"))
 
-ggplot(data = prox1_edit, aes(x= Cluster, y= Fraction.of.cells.expressing.gene, fill = "blue"))+
+#stats stuff which I found out I actually can't run because I only have the mean data. 
+# library(gt)
+# library(DAAG)
+# library(car)
+# library(multcomp)
+# library(ggsignif)
+# one.way <- aov(Fraction.of.cells.expressing.gene ~ Cluster, data = prox1_edit)
+# tukey <- TukeyHSD(one.way)
+# tukey
+# #Extracting significant pairs
+# tukey_df <- as.data.frame(tukey$Cluster)
+# names(tukey_df)[names(tukey_df) == "p adj"] <- "p.adj"
+# sig_pairs <- subset(tukey_df,p.adj < 0.05)
+# 
+# # Create list of comparisons from significant pairs
+# comparisons <- comparisons <- strsplit(row.names(sig_pairs), "-")
+
+ggplot(data = prox1_edit, aes(x= Cluster, y= Fraction.of.cells.expressing.gene, fill = "#009900"))+
   geom_bar(stat = "identity")+
+#   geom_signif(comparisons = comparisons,
+#   annotations = ifelse(sig_pairs$p.adj < 0.001,   "***",                               ifelse(sig_pairs$p.adj < 0.01, "**",               ifelse(sig_pairs$p.adj < 0.05, "*", ""))),
+# y_position = seq(25, 35, length.out = nrow(sig_pairs)),
+# tip_length = 0.02)+
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
     legend.position="none")+ #might have to change if I want the legend back for some reason
   ggtitle(label = "Expression of PROX1 per Cluster")+
@@ -335,12 +392,22 @@ ggplot(data = prox1_edit, aes(x= Cluster, y= Fraction.of.cells.expressing.gene, 
   labs(x = "Clusters", y = "Percent Expression")
 ```
 
-Figure 7: Lens marker gene PROX1 expression per cluster
-
 ## Discussion
 
 Insert discussion here.
 
 ## References
 
-finalized references from Zotero added here.
+Chaffee, B. R., Shang, F., Chang, M.-L., Clement, T. M., Eddy, E. M., Wagner, B. D., Nakahara, M., Nagata, S., Robinson, M. L., & Taylor, A. (2014). Nuclear removal during terminal lens fiber cell differentiation requires CDK1 activity: Appropriating mitosis-related nuclear disassembly. Development (Cambridge, England), 141(17), 3388–3398.[ https://doi.org/10.1242/dev.106005](https://doi.org/10.1242/dev.106005)
+
+Gassner, K. M., & Tassava, R. A. (1997). Abnormal limb regeneration in the short-toes mutant of the axolotl, Ambystoma mexicanum: Studies of age, level of amputation, and extracellular matrix. The Journal of Experimental Zoology, 279(6), 571–578.
+
+Henry, J. J., & Tsonis, P. A. (2010). Molecular and Cellular Aspects of Amphibian Lens Regeneration. Progress in Retinal and Eye Research, 29(6), 543–555.[ https://doi.org/10.1016/j.preteyeres.2010.07.002](https://doi.org/10.1016/j.preteyeres.2010.07.002)
+
+Sandoval-Guzmán, T., Wang, H., Khattak, S., Schuez, M., Roensch, K., Nacu, E., Tazaki, A., Joven, A., Tanaka, E. M., & Simon, A. (2014). Fundamental differences in dedifferentiation and stem cell recruitment during skeletal muscle regeneration in two salamander species. Cell Stem Cell, 14(2), 174–187.[ https://doi.org/10.1016/j.stem.2013.11.007](https://doi.org/10.1016/j.stem.2013.11.007)
+
+Sousounis, K., Qi, F., Yadav, M. C., Millán, J. L., Toyama, F., Chiba, C., Eguchi, Y., Eguchi, G., & Tsonis, P. A. (n.d.). A robust transcriptional program in newts undergoing multiple events of lens regeneration throughout their lifespan. eLife, 4, e09594.[ https://doi.org/10.7554/eLife.09594](https://doi.org/10.7554/eLife.09594)
+
+Suetsugu-Maki, R., Maki, N., Nakamura, K., Sumanas, S., Zhu, J., Del Rio-Tsonis, K., & Tsonis, P. A. (2012). Lens regeneration in axolotl: New evidence of developmental plasticity. BMC Biology, 10, 103.[ https://doi.org/10.1186/1741-7007-10-103](https://doi.org/10.1186/1741-7007-10-103)
+
+Tsissios, G., Theodoroudis-Rapp, G., Chen, W., Sallese, A., Smucker, B., Ernst, L., Chen, J., Xu, Y., Ratvasky, S., Wang, H., & Del Rio-Tsonis, K. (2023). Characterizing the lens regeneration process in Pleurodeles waltl. Differentiation; Research in Biological Diversity, 132, 15–23.[ https://doi.org/10.1016/j.diff.2023.02.003](https://doi.org/10.1016/j.diff.2023.02.003)
